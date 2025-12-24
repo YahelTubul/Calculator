@@ -9,6 +9,7 @@ class Tokenize(Enum):
     LPAREN = 3
     RPAREN = 4
 
+operators : char = ['+','-','*','/','^','%','$','&','@','~','!']
 
 class Token:
     def __init__(self, type, value):
@@ -27,6 +28,7 @@ class Token:
                 if long_num:
                     tokens.append(Token(Tokenize.NUMBER, long_num))
                     long_num = ""
+            if (char == )
 
 
 
