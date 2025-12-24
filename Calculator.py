@@ -28,7 +28,22 @@ class Token:
                 if long_num:
                     tokens.append(Token(Tokenize.NUMBER, long_num))
                     long_num = ""
-            if (char == )
+                #check if char is a valid operator,and add it to list
+                if (char in operators):
+                    tokens.append(Token(Tokenize.OPERATOR, char))
+                #check if char is left paren
+                elif (char == '('):
+                    tokens.append(Token(Tokenize.LPAREN, char))
+                #check if char is right paren
+                elif (char == ')'):
+                    tokens.append(Token(Tokenize.RPAREN, char))
+                else:
+                    raise ValueError("Invalid token")
+        #add if there is the last char to the list
+        if long_num:
+            tokens.append(Token(Tokenize.NUMBER, long_num))
+        return tokens
+
 
 
 
