@@ -74,9 +74,14 @@ class Token:
             tokens.append(Token(Tokenize.NUMBER, long_num))
         return tokens
 
+
+def get_precedence(opr_tok: list) -> int:
+    return operator_dict[opr_tok]['precedence']
+
+
 def infix_to_prefix(tokens: list) -> list:
     reverse_tokens: list = []
-    #reverse the tokenes and swap the parens
+    # reverse the tokenes and swap the parens
     for token in reversed(tokens):
         if token.type == Tokenize.LPAREN:
             reverse_tokens.append(Token(Tokenize.RPAREN, ')'))
@@ -86,12 +91,17 @@ def infix_to_prefix(tokens: list) -> list:
             reverse_tokens.append(token)
     pref_result: list = []
     temp_stack: list = []
+    expect_opr = True
+
 
     for rev_token in reverse_tokens:
+        # check if the token is number type
         if rev_token.type == Tokenize.NUMBER:
             pref_result.append(rev_token)
+            expect_opr = True
         elif rev_token.type == Tokenize.LPAREN:
             temp_stack.append(rev_token)
+            expect_opr = True
         elif rev_token.type == Tokenize.RPAREN:
             left_paren = False
             while temp_stack:
@@ -102,13 +112,39 @@ def infix_to_prefix(tokens: list) -> list:
                 pref_result.append(token)
             if not left_paren:
                 raise ValueError("missmatch left parenthesis")
+            expect_opr = True
+        #check if the token type is an operator and filter them by the precedence and position
+        elif rev_token.type == Tokenize.OPERATOR:
+            operator = rev_token.value
+            if operator not in operator_dict:
+                raise ValueError(f"Invalid operator: {operator}")
+            #check operator unary
+            if operator == '~':
+                if not expect_operand:
+                    raise ValueError("Syntax error: '~' must appear before an operand")
+
+            if operator_dict[operator]['position'] != 'middle':
+                raise ValueError(f"unary operator not handled yet: {operator}")
+            while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
+                top_operator = temp_stack[-1].value
+                if get_precedence(top_operator) >= get_precedence(operator):
+                    pref_result.append(temp_stack.pop())
+                else:
+                    break
+
+            temp_stack.append(rev_token)
+
+        else:
+            raise ValueError(f"unexpected token: {rev_token.value}")
+
+    # validate there is no more paren in the stack
     while temp_stack:
         token = temp_stack.pop()
         if token.type in (Tokenize.LPAREN, Tokenize.RPAREN):
-            raise ValueError("Mismatched parenthesis")
+            raise ValueError("missmatch parenthesis")
         pref_result.append(token)
 
-    return pref_result
+    return list(reversed(pref_result))
 
 
 
