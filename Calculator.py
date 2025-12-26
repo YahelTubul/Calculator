@@ -10,7 +10,7 @@ class Tokenize(Enum):
     RPAREN = 4
 
 
-operators: char = ['+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!']
+operators: list = ['+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!']
 
 
 class Token:
@@ -25,7 +25,7 @@ class Token:
         token_type: Tokenize = None
         for char in expression:
             #check for negative numbers. by comare if the prev token its not a number type
-            if char == '-' and (prev_token_type in [None, Tokenize.OPERATOR, Tokenize.LPAREN]):
+            if char == '-' and (token_type in [None, Tokenize.OPERATOR, Tokenize.LPAREN]):
                 long_num += char
             # check if the char is number or float number and for number with two numbers and more
             elif (char.isdigit() or (char == '.' and '.' not in long_num)):
@@ -35,18 +35,25 @@ class Token:
                 if long_num:
                     tokens.append(Token(Tokenize.NUMBER, long_num))
                     long_num = ""
+                    token_type = Tokenize.NUMBER
                 # check if char is a valid operator,and add it to list
                 if (char in operators):
                     tokens.append(Token(Tokenize.OPERATOR, char))
+                    token_type = Tokenize.OPERATOR
                 # check if char is left paren
                 elif (char == '('):
                     tokens.append(Token(Tokenize.LPAREN, char))
+                    token_type = Tokenize.LPAREN
                 # check if char is right paren
                 elif (char == ')'):
                     tokens.append(Token(Tokenize.RPAREN, char))
+                    token_type = Tokenize.RPAREN
                 else:
                     raise ValueError("Invalid token")
         # add if there is the last char to the list
         if long_num:
             tokens.append(Token(Tokenize.NUMBER, long_num))
         return tokens
+
+
+
