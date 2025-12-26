@@ -12,6 +12,25 @@ class Tokenize(Enum):
 
 operators: list = ['+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!']
 
+operator_dict = {
+    '+': {'precedence': 1, 'position': 'middle', 'arity': 2},  # add
+    '-': {'precedence': 1, 'position': 'middle', 'arity': 2},  # sub
+
+    '*': {'precedence': 2, 'position': 'middle', 'arity': 2},  # multiply
+    '/': {'precedence': 2, 'position': 'middle', 'arity': 2},  # divide
+
+    '^': {'precedence': 3, 'position': 'middle', 'arity': 2},  # power
+
+    '%': {'precedence': 4, 'position': 'middle', 'arity': 2},  # modulo
+
+    '$': {'precedence': 5, 'position': 'middle', 'arity': 2},  # max number
+    '&': {'precedence': 5, 'position': 'middle', 'arity': 2},  # minimum number
+    '@': {'precedence': 5, 'position': 'middle', 'arity': 2},  # average
+
+    '~': {'precedence': 6, 'position': 'left', 'arity': 1},  # negative
+    '!': {'precedence': 6, 'position': 'right', 'arity': 1},  # assembly
+}
+
 
 class Token:
     def __init__(self, type, value):
@@ -24,7 +43,7 @@ class Token:
         long_num: str = ""
         token_type: Tokenize = None
         for char in expression:
-            #check for negative numbers. by comare if the prev token its not a number type
+            # check for negative numbers. by comare if the prev token its not a number type
             if char == '-' and (token_type in [None, Tokenize.OPERATOR, Tokenize.LPAREN]):
                 long_num += char
             # check if the char is number or float number and for number with two numbers and more
@@ -54,6 +73,3 @@ class Token:
         if long_num:
             tokens.append(Token(Tokenize.NUMBER, long_num))
         return tokens
-
-
-
