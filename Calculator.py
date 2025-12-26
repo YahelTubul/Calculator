@@ -28,7 +28,7 @@ operator_dict = {
     '@': {'precedence': 5, 'position': 'middle', 'arity': 2},  # average
 
     '~': {'precedence': 6, 'position': 'left', 'arity': 1},  # negative
-    '!': {'precedence': 6, 'position': 'right', 'arity': 1},  # assembly
+    '!': {'precedence': 6, 'position': 'right', 'arity': 1},  # factorial
 }
 
 
@@ -73,3 +73,9 @@ class Token:
         if long_num:
             tokens.append(Token(Tokenize.NUMBER, long_num))
         return tokens
+
+def infix_to_prefix(tokens: list) -> list:
+    # TODO: implement the rest of the function
+    prefix_result: list = []
+    temp_stack: list = []
+    for token in tokens:
