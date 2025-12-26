@@ -79,10 +79,37 @@ def infix_to_prefix(tokens: list) -> list:
     #reverse the tokenes and swap the parens
     for token in reversed(tokens):
         if token.type == Tokenize.LPAREN:
-            rev_tokens.append(Token(Tokenize.RPAREN, ')'))
+            reverse_tokens.append(Token(Tokenize.RPAREN, ')'))
         elif token.type == Tokenize.RPAREN:
-            rev_tokens.append(Token(Tokenize.LPAREN, '('))
+            reverse_tokens.append(Token(Tokenize.LPAREN, '('))
         else:
-            rev_tokens.append(token)
-    return reverse_tokens
-        
+            reverse_tokens.append(token)
+    pref_result: list = []
+    temp_stack: list = []
+
+    for rev_token in reverse_tokens:
+        if rev_token.type == Tokenize.NUMBER:
+            pref_result.append(rev_token)
+        elif rev_token.type == Tokenize.LPAREN:
+            temp_stack.append(rev_token)
+        elif rev_token.type == Tokenize.RPAREN:
+            left_paren = False
+            while temp_stack:
+                token = temp_stack.pop()
+                if token.type == Tokenize.LPAREN:
+                    left_paren = True
+                    break
+                pref_result.append(token)
+            if not left_paren:
+                raise ValueError("missmatch left parenthesis")
+    while temp_stack:
+        token = temp_stack.pop()
+        if token.type in (Tokenize.LPAREN, Tokenize.RPAREN):
+            raise ValueError("Mismatched parenthesis")
+        pref_result.append(token)
+
+    return pref_result
+
+
+
+
