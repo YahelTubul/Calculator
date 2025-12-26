@@ -75,7 +75,14 @@ class Token:
         return tokens
 
 def infix_to_prefix(tokens: list) -> list:
-    # TODO: implement the rest of the function
-    prefix_result: list = []
-    temp_stack: list = []
-    for token in tokens:
+    reverse_tokens: list = []
+    #reverse the tokenes and swap the parens
+    for token in reversed(tokens):
+        if token.type == Tokenize.LPAREN:
+            rev_tokens.append(Token(Tokenize.RPAREN, ')'))
+        elif token.type == Tokenize.RPAREN:
+            rev_tokens.append(Token(Tokenize.LPAREN, '('))
+        else:
+            rev_tokens.append(token)
+    return reverse_tokens
+        
