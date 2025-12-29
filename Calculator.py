@@ -91,8 +91,8 @@ def infix_to_prefix(tokens: list) -> list:
             reverse_tokens.append(token)
     pref_result: list = []
     temp_stack: list = []
+    # when this variable is true it expect get operand. if false it expect get operator
     expect_opr = True
-
 
     for rev_token in reverse_tokens:
         # check if the token is number type
@@ -113,39 +113,53 @@ def infix_to_prefix(tokens: list) -> list:
             if not left_paren:
                 raise ValueError("missmatch left parenthesis")
             expect_opr = True
-        #check if the token type is an operator and filter them by the precedence and position
+        # check if the token type is an operator and filter them by the precedence and position
         elif rev_token.type == Tokenize.OPERATOR:
             operator = rev_token.value
             if operator not in operator_dict:
                 raise ValueError(f"Invalid operator: {operator}")
-            #check operator unary
-            if operator == '~':
-                if not expect_operand:
-                    raise ValueError("Syntax error: '~' must appear before an operand")
+            # get where the position needed be
+            op_pos = operator_dict[operator]['position']
+            # check operator unary
+            # unary prefix, '~' operator
+            if pos == 'left':
+                if not expect_opr:
+                    raise ValueError(f"syntax error: '{operator}' must appear before an operand")
+                expect_opr = True
 
-            if operator_dict[operator]['position'] != 'middle':
-                raise ValueError(f"unary operator not handled yet: {operator}")
-            while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
-                top_operator = temp_stack[-1].value
-                if get_precedence(top_operator) >= get_precedence(operator):
-                    pref_result.append(temp_stack.pop())
-                else:
-                    break
+            # unary postfix , '!' operator
+            elif pos == 'right':
+                if expect_opr:
+                    raise ValueError(f"syntax error: '{operator}' must appear after an operand")
+                expect_opr = False
 
-            temp_stack.append(rev_token)
+            # binary operator is in the middle
+            elif pos == 'middle':
+                if expect_opr:
+                    raise ValueError(f"syntax error: binary operator '{operator}' missing left operand")
+                expect_opr = True
 
-        else:
-            raise ValueError(f"unexpected token: {rev_token.value}")
+            else :
+                raise ValueError(f"invalid operator position")
+
+                #pop from the stack by precedence
+                while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
+                    top_op = temp_stack[-1].value
+                    if get_precedence(top_op) >= get_precedence(operator):
+                        pref_result.append(temp_stack.pop())
+                    else:
+                        break
+
+                temp_stack.append(rev_token)
+
+            else:
+            raise ValueError(f"Unexpected token: {rev_token.value}")
 
     # validate there is no more paren in the stack
     while temp_stack:
-        token = temp_stack.pop()
-        if token.type in (Tokenize.LPAREN, Tokenize.RPAREN):
-            raise ValueError("missmatch parenthesis")
-        pref_result.append(token)
+        top = temp_stack.pop()
+        if top.type in (Tokenize.LPAREN, Tokenize.RPAREN):
+            raise ValueError("Mismatched parentheses")
+        pref_result.append(top)
 
     return list(reversed(pref_result))
-
-
-
-
