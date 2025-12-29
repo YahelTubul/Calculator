@@ -98,7 +98,7 @@ def infix_to_prefix(tokens: list) -> list:
         # check if the token is number type
         if rev_token.type == Tokenize.NUMBER:
             pref_result.append(rev_token)
-            expect_opr = True
+            expect_opr = False
         elif rev_token.type == Tokenize.LPAREN:
             temp_stack.append(rev_token)
             expect_opr = True
@@ -122,37 +122,37 @@ def infix_to_prefix(tokens: list) -> list:
             op_pos = operator_dict[operator]['position']
             # check operator unary
             # unary prefix, '~' operator
-            if pos == 'left':
+            if op_pos == 'left':
                 if not expect_opr:
                     raise ValueError(f"syntax error: '{operator}' must appear before an operand")
                 expect_opr = True
 
             # unary postfix , '!' operator
-            elif pos == 'right':
+            elif op_pos == 'right':
                 if expect_opr:
                     raise ValueError(f"syntax error: '{operator}' must appear after an operand")
                 expect_opr = False
 
             # binary operator is in the middle
-            elif pos == 'middle':
+            elif op_pos == 'middle':
                 if expect_opr:
                     raise ValueError(f"syntax error: binary operator '{operator}' missing left operand")
                 expect_opr = True
 
-            else :
+            else:
                 raise ValueError(f"invalid operator position")
 
-                #pop from the stack by precedence
-                while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
-                    top_op = temp_stack[-1].value
-                    if get_precedence(top_op) >= get_precedence(operator):
-                        pref_result.append(temp_stack.pop())
-                    else:
-                        break
+                # pop from the stack by precedence
+            while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
+                top_op = temp_stack[-1].value
+                if get_precedence(top_op) >= get_precedence(operator):
+                    pref_result.append(temp_stack.pop())
+                else:
+                    break
 
-                temp_stack.append(rev_token)
+            temp_stack.append(rev_token)
 
-            else:
+        else:
             raise ValueError(f"Unexpected token: {rev_token.value}")
 
     # validate there is no more paren in the stack
@@ -163,3 +163,16 @@ def infix_to_prefix(tokens: list) -> list:
         pref_result.append(top)
 
     return list(reversed(pref_result))
+
+
+# unit test for the function infix_to_prefix (credit: QA Lesson)
+def test():
+    tokens = Token.split_tokenize("2*4+5")
+    prefix_tokens = infix_to_prefix(tokens)
+    values = []
+    for token in prefix_tokens:
+        values.append(token.value)
+    print(values)
+
+
+test()
