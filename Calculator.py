@@ -45,16 +45,30 @@ class Token:
         for char in expression:
             # check for negative numbers. by comare if the prev token its not a number type
             if char == '-' and (token_type in [None, Tokenize.OPERATOR, Tokenize.LPAREN]):
-                long_num += char
+                #check if there is already minus operator or part number as a number
+                if long_num and long_num != '-' * len(long_num):
+                    tokens.append(Token(Tokenize.NUMBER, long_num))
+                    long_num = ""
+                    token_type = Tokenize.NUMBER
+                    tokens.append(Token(Tokenize.OPERATOR, char))
+                    token_type = Tokenize.OPERATOR
+                else:
+                    long_num += char
             # check if the char is number or float number and for number with two numbers and more
             elif (char.isdigit() or (char == '.' and '.' not in long_num)):
                 long_num += char
             else:
                 # add the number to the tokens list
                 if long_num:
-                    tokens.append(Token(Tokenize.NUMBER, long_num))
-                    long_num = ""
-                    token_type = Tokenize.NUMBER
+                    if long_num == '-' * len(long_num) and len(long_num) > 0:
+                        for minus in long_num:
+                            tokens.append(Token(Tokenize.OPERATOR, minus))
+                            token_type = Tokenize.OPERATOR
+                        long_num = ""
+                    else:
+                        tokens.append(Token(Tokenize.NUMBER, long_num))
+                        long_num = ""
+                        token_type = Tokenize.NUMBER
                 # check if char is a valid operator,and add it to list
                 if (char in operators):
                     tokens.append(Token(Tokenize.OPERATOR, char))
@@ -67,11 +81,18 @@ class Token:
                 elif (char == ')'):
                     tokens.append(Token(Tokenize.RPAREN, char))
                     token_type = Tokenize.RPAREN
+                #ignore from spaces
+                elif (char == ' '):
+                    continue
                 else:
                     raise ValueError("Invalid token")
         # add if there is the last char to the list
         if long_num:
-            tokens.append(Token(Tokenize.NUMBER, long_num))
+            if long_num == '-' * len(long_num):
+                for minus in long_num:
+                    tokens.append(Token(Tokenize.OPERATOR, minus))
+            else:
+                tokens.append(Token(Tokenize.NUMBER, long_num))
         return tokens
 
 
@@ -89,6 +110,7 @@ def infix_to_prefix(tokens: list) -> list:
             reverse_tokens.append(Token(Tokenize.LPAREN, '('))
         else:
             reverse_tokens.append(token)
+
     pref_result: list = []
     temp_stack: list = []
     # when this variable is true it expect get operand. if false it expect get operator
@@ -99,9 +121,11 @@ def infix_to_prefix(tokens: list) -> list:
         if rev_token.type == Tokenize.NUMBER:
             pref_result.append(rev_token)
             expect_opr = False
+
         elif rev_token.type == Tokenize.LPAREN:
             temp_stack.append(rev_token)
             expect_opr = True
+
         elif rev_token.type == Tokenize.RPAREN:
             left_paren = False
             while temp_stack:
@@ -110,17 +134,21 @@ def infix_to_prefix(tokens: list) -> list:
                     left_paren = True
                     break
                 pref_result.append(token)
+
             if not left_paren:
                 raise ValueError("missmatch left parenthesis")
-            expect_opr = True
+
+            expect_opr = False
+
         # check if the token type is an operator and filter them by the precedence and position
         elif rev_token.type == Tokenize.OPERATOR:
             operator = rev_token.value
             if operator not in operator_dict:
                 raise ValueError(f"Invalid operator: {operator}")
+
             # get where the position needed be
             op_pos = operator_dict[operator]['position']
-            # check operator unary
+
             # unary prefix, '~' operator
             if op_pos == 'left':
                 if not expect_opr:
@@ -140,9 +168,9 @@ def infix_to_prefix(tokens: list) -> list:
                 expect_opr = True
 
             else:
-                raise ValueError(f"invalid operator position")
+                raise ValueError("invalid operator position")
 
-                # pop from the stack by precedence
+            # pop from the stack by precedence
             while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
                 top_op = temp_stack[-1].value
                 if get_precedence(top_op) >= get_precedence(operator):
@@ -167,7 +195,7 @@ def infix_to_prefix(tokens: list) -> list:
 
 # unit test for the function infix_to_prefix (credit: QA Lesson)
 def test():
-    tokens = Token.split_tokenize("2*4+5")
+    tokens = Token.split_tokenize("4~@3")
     prefix_tokens = infix_to_prefix(tokens)
     values = []
     for token in prefix_tokens:
