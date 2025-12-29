@@ -221,6 +221,12 @@ def infix_to_prefix(tokens: list) -> list:
 
 # unit test for the function infix_to_prefix (credit: QA Lesson)
 def test():
-    
+    tokens = Token.split_tokenize("~3")
+    prefix_tokens = infix_to_prefix(tokens)
+    values = []
+    for token in prefix_tokens:
+        values.append(token.value)
+    print(values)
+
 
 test()
