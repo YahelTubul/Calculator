@@ -3,8 +3,14 @@ import math
 
 NUM_OPERANDS = 2
 
-"""This function handles defining the action of each of the operators"""
+"""This function calc the factorial that getting from the unary_operator function"""
+def factorial(num : int) -> float:
+    if num == 0:
+        return 1
+    else:
+        return num * factorial(num - 1)
 
+"""This function handles defining the action of each of the binary operators"""
 
 def binary_operator(op_1: float, op_2: float, operator: str):
     if operator == '+':
@@ -32,11 +38,19 @@ def binary_operator(op_1: float, op_2: float, operator: str):
     else:
         raise ValueError('Invalid operator')
 
+"""This function handles defining the action of each of the binary operator"""
+
 
 def unary_operator(operand: float, operator: str):
+    if operator == '~':
+        return -operand
+    elif operator == '!':
+        return factorial(int(operand))
+    else:
+        raise ValueError('Invalid operator')
 
 
-def classify_operator(operator: str, stack: list) -> list:
+def classify_operator(operator: str, stack: list):
     op_info = operator_dict[operator]
     arity = op_info['arity']
     if len(stack) < arity:
