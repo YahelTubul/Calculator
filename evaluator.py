@@ -65,6 +65,9 @@ def classify_operator(operator: str, stack: list):
     else:
         raise ValueError("Too much arity for the operator")
 
+def evaluator(toknes_lst: list):
+    stack = []
+
 
 
 
