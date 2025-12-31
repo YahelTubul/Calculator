@@ -113,9 +113,9 @@ def parser(reverse_tokens: list) -> list:
 
             # unary postfix
             elif op_pos == 'right':
-                if expect_opr:
+                if not expect_opr:
                     raise ValueError(f"syntax error: '{operator}' must appear after an operand")
-                expect_opr = False
+                expect_opr = True
 
             # binary operator is in the middle
             elif op_pos == 'middle':
