@@ -155,8 +155,8 @@ def infix_to_prefix(tokens: list) -> list:
     validate_appearance(tokens)
 
     # reverse the tokens and swap the parens
-    reverse_tokens = reverse_tokens(tokens)
+    reverse_lst = reverse_tokens(tokens)
 
     # process reversed tokens
-    pref_result = parser(reverse_tokens)
+    pref_result = parser(reverse_lst)
     return list(reversed(pref_result))

@@ -37,7 +37,7 @@ def main_calculator():
             experssion = input("> ").strip()
             tokens = split_tokenize(experssion)
             prfix_tok = infix_to_prefix(tokens)
-            result = evaluator(prfix_tok)
+            result = evaluator.evaluator(prfix_tok)
             print(result)
         except KeyboardInterrupt:
             print("Bye Bye!!!!")
