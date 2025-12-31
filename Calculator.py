@@ -1,10 +1,10 @@
 import evaluator
+from parser import infix_to_prefix
+from tokenize import split_tokenize
 
 
 def logo():
-    def print_logo():
-        """Print the calculator logo"""
-        logo = """
+    logo = """
                                                                                                                                                                                  
                                                                                                                                                                          
                             ,---,                ,--,             ,----..               ,--,                             ,--,                  ___                       
@@ -22,9 +22,29 @@ def logo():
         `--`  `--`---'                 `----'                     `---`    `--`---'              `----'                         `--`---'                                 
                                                                                                                                                                               
         """
-        print(logo)
-        print("=" * 80)
-        print("Welcome to the Yahel Advanced Calculator!")
-        print("=" * 80)
-        print()
+    print(logo)
+    print("=" * 80)
+    print("Welcome to the Yahel Advanced Calculator!")
+    print("=" * 80)
+    print()
+
+
 def main_calculator():
+    logo()
+    while True:
+        try:
+            print("Enter experssion:\n")
+            experssion = input("> ").strip()
+            tokens = split_tokenize(experssion)
+            prfix_tok = infix_to_prefix(tokens)
+            result = evaluator(prfix_tok)
+            print(result)
+        except KeyboardInterrupt:
+            print("Bye Bye!!!!")
+            break
+        except Exception as e:
+            print(f"Error: {e}")
+
+
+if __name__ == '__main__':
+    main_calculator()
