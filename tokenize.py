@@ -47,38 +47,32 @@ def split_tokenize(expression: str) -> list:
     token_type: Tokenize = None
 
     for char in expression:
-        # check for negative numbers. by compare if the prev token its not a number type
-        if char == '-' and (token_type in [None, Tokenize.OPERATOR, Tokenize.LPAREN]):
-            if long_num:
-                # check if there is already minus operator or part number as a number
-                if long_num == '-' * len(long_num):
-                    for minus in long_num:
-                        tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
-                        token_type = Tokenize.OPERATOR
-                    long_num = char
-                else:
+        # check for negative numbers. by compare if the prev token it's not a number type
+        if char == '-':
+            if token_type in [Tokenize.NUMBER, Tokenize.RPAREN]:
+                if long_num:
                     tokens.append(Token(Tokenize.NUMBER, long_num))
                     token_type = Tokenize.NUMBER
                     long_num = ""
-                    tokens.append(Token(Tokenize.OPERATOR, '-'))
-                    token_type = Tokenize.OPERATOR
+                tokens.append(Token(Tokenize.OPERATOR, '-'))
+                token_type = Tokenize.OPERATOR
+
+            elif token_type is None:
+                tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
+                token_type = Tokenize.OPERATOR
+
             else:
                 long_num += char
         # check if the char is number or float number and for number with two numbers and more
         elif char.isdigit() or (char == '.' and '.' not in long_num):
             long_num += char
+
         else:
             # add the number to the tokens list
             if long_num:
-                if long_num == '-' * len(long_num) and len(long_num) > 1:
-                    for minus in long_num:
-                        tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
-                        token_type = Tokenize.OPERATOR
-                    long_num = ""
-                elif long_num:
-                    tokens.append(Token(Tokenize.NUMBER, long_num))
-                    long_num = ""
-                    token_type = Tokenize.NUMBER
+                tokens.append(Token(Tokenize.NUMBER, long_num))
+                long_num = ""
+                token_type = Tokenize.NUMBER
             # check if char is a valid operator, and add it to list
             if char in operators:
                 tokens.append(Token(Tokenize.OPERATOR, char))
@@ -99,11 +93,7 @@ def split_tokenize(expression: str) -> list:
 
     # add if there is, the last char to the list
     if long_num:
-        if long_num == '-' * len(long_num) and len(long_num) > 1:
-            for minus in long_num:
-                tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
-        elif long_num:
-            tokens.append(Token(Tokenize.NUMBER, long_num))
+        tokens.append(Token(Tokenize.NUMBER, long_num))
 
     return tokens
 
