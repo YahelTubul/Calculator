@@ -108,8 +108,10 @@ def parser(reverse_tokens: list) -> list:
             # get where the position needed be
             op_pos = operator_dict[operator]['position']
 
-            if operator == '-' and expect_opr:
-                expect_opr = False
+            if operator == '-':
+                if expect_opr:
+                    raise ValueError(f"syntax error: binary operator '{operator}' missing left operand")
+                expect_opr = True
 
             # unary prefix
             elif op_pos == 'left':
