@@ -26,6 +26,7 @@ operator_dict = {
     '&': {'precedence': 5, 'position': 'middle', 'arity': 2},  # minimum number
     '@': {'precedence': 5, 'position': 'middle', 'arity': 2},  # average
 
+    'minus_unary':{'precedence': 2.5, 'position': 'left', 'arity': 1}, # minus unary
     '~': {'precedence': 6, 'position': 'left', 'arity': 1},  # negative
     '!': {'precedence': 6, 'position': 'right', 'arity': 1},  # factorial
 }
