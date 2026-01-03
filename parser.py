@@ -2,6 +2,7 @@ from tokenize import Token, Tokenize, operator_dict, get_precedence
 
 """Check if current prefix operator can follow previous prefix operator"""
 
+
 def follow_prefix_op(curr_op: str, prev_op: str) -> bool:
     curr_pos = operator_dict[curr_op]['position']
     prev_pos = operator_dict[prev_op]['position']
@@ -12,8 +13,9 @@ def follow_prefix_op(curr_op: str, prev_op: str) -> bool:
     if operator_dict[curr_op]['arity'] == 2 or operator_dict[prev_op]['arity'] == 2:
         return True
 
-    #return false when there is two unary prefix operators in a row
+    # return false when there is two unary prefix operators in a row
     return False
+
 
 """valid that operators appear in valid positions according to the dictinary"""
 
@@ -50,6 +52,7 @@ def validate_appearance(tokens: list) -> None:
                 if prev.type not in [Tokenize.NUMBER, Tokenize.RPAREN]:
                     if prev.type != Tokenize.OPERATOR or operator_dict[prev.value]['position'] != 'right':
                         raise ValueError(f"syntax error: postfix operator '{operator}' must appear after an operand")
+
 
 """ return the list of token reverse but with swap parens"""
 
@@ -105,8 +108,11 @@ def parser(reverse_tokens: list) -> list:
             # get where the position needed be
             op_pos = operator_dict[operator]['position']
 
+            if operator == '-' and expect_opr:
+                expect_opr = False
+
             # unary prefix
-            if op_pos == 'left':
+            elif op_pos == 'left':
                 if expect_opr:
                     raise ValueError(f"syntax error: '{operator}' must appear before an operand")
                 expect_opr = False
@@ -148,7 +154,9 @@ def parser(reverse_tokens: list) -> list:
 
     return pref_result
 
+
 """convert the expression from infix presentation to prefix presentation"""
+
 
 def infix_to_prefix(tokens: list) -> list:
     # check if the characters are valid, before I reverse the list
