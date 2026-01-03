@@ -38,6 +38,25 @@ class Token:
         self.value = value
 
 
+"""pass on the the long number a normalize the number to valid number of minus operator"""
+
+
+def organize_minus(long_num: str) -> str:
+    if not long_num.startswith('-'):
+        return long_num
+    count = 0
+    for minus in long_num:
+        if minus == '-':
+            count += 1
+        else:
+            break
+    number = long_num[count:]
+    if count % 2 == 0:
+        return number
+    else:
+        return '-' + number
+
+
 """pass each char in the expression and defines each character in the expression to the type of the token."""
 
 
@@ -51,7 +70,8 @@ def split_tokenize(expression: str) -> list:
         if char == '-':
             if token_type in [Tokenize.NUMBER, Tokenize.RPAREN]:
                 if long_num:
-                    tokens.append(Token(Tokenize.NUMBER, long_num))
+                    organize_exp = organize_minus(long_num)
+                    tokens.append(Token(Tokenize.NUMBER, organize_exp))
                     token_type = Tokenize.NUMBER
                     long_num = ""
                 tokens.append(Token(Tokenize.OPERATOR, '-'))
@@ -70,7 +90,8 @@ def split_tokenize(expression: str) -> list:
         else:
             # add the number to the tokens list
             if long_num:
-                tokens.append(Token(Tokenize.NUMBER, long_num))
+                organize_exp = organize_minus(long_num)
+                tokens.append(Token(Tokenize.NUMBER, organize_exp))
                 long_num = ""
                 token_type = Tokenize.NUMBER
             # check if char is a valid operator, and add it to list
@@ -93,7 +114,8 @@ def split_tokenize(expression: str) -> list:
 
     # add if there is, the last char to the list
     if long_num:
-        tokens.append(Token(Tokenize.NUMBER, long_num))
+        organize_exp = organize_minus(long_num)
+        tokens.append(Token(Tokenize.NUMBER, organize_exp))
 
     return tokens
 
