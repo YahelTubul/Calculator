@@ -38,6 +38,16 @@ class Token:
         self.value = value
 
 
+"""pass on each char in the long number if all char they digits"""
+
+
+def check_digits(long_number):
+    for char in long_number:
+        if char.isdigit():
+            return True
+    return False
+
+
 """pass on the the long number a normalize the number to valid number of minus operator"""
 
 
