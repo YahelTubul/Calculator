@@ -1,5 +1,4 @@
 from tokenize import Token, Tokenize, operator_dict, get_precedence
-import math
 
 NUM_OPERANDS = 2
 
@@ -7,6 +6,8 @@ NUM_OPERANDS = 2
 
 
 def factorial(num: int) -> float:
+    if num < 0:
+        raise ValueError("Cannot do factorial of negative number")
     if num == 0:
         return 1
     else:
