@@ -90,10 +90,16 @@ def split_tokenize(expression: str) -> list:
         else:
             # add the number to the tokens list
             if long_num:
-                organize_exp = organize_minus(long_num)
-                tokens.append(Token(Tokenize.NUMBER, organize_exp))
-                long_num = ""
-                token_type = Tokenize.NUMBER
+                if long_num == '-' * len(long_num):
+                    for minus in long_num:
+                        tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
+                    long_num = ""
+                else:
+                    organize_exp = organize_minus(long_num)
+                    tokens.append(Token(Tokenize.NUMBER, organize_exp))
+                    long_num = ""
+                    token_type = Tokenize.NUMBER
+
             # check if char is a valid operator, and add it to list
             if char in operators:
                 tokens.append(Token(Tokenize.OPERATOR, char))
@@ -114,8 +120,12 @@ def split_tokenize(expression: str) -> list:
 
     # add if there is, the last char to the list
     if long_num:
-        organize_exp = organize_minus(long_num)
-        tokens.append(Token(Tokenize.NUMBER, organize_exp))
+        if long_num == '-' * len(long_num):
+            for minus in long_num:
+                tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
+        else:
+            organize_exp = organize_minus(long_num)
+            tokens.append(Token(Tokenize.NUMBER, organize_exp))
 
     return tokens
 
