@@ -137,13 +137,28 @@ def parser(reverse_tokens: list) -> list:
             # pop from the stack by precedence
             while temp_stack and temp_stack[-1].type == Tokenize.OPERATOR:
                 top_op = temp_stack[-1].value
-                if get_precedence(top_op) >= get_precedence(operator):
+                need_pop = False
+                top_pre = get_precedence(top_op)
+                curr_pre = get_precedence(operator)
+
+                if top_pre > curr_pre:
+                    need_pop = True
+
+                elif top_pre == curr_pre:
+                    top_pos = operator_dict[top_op]['position']
+                    curr_pos = operator_dict[operator]['position']
+
+                    if top_pos == 'right' and curr_pos == 'left':
+                        need_pop = False
+                    else:
+                        need_pop = True
+
+                if need_pop:
                     pref_result.append(temp_stack.pop())
                 else:
                     break
 
             temp_stack.append(rev_token)
-
         else:
             raise ValueError(f"Unexpected token: {rev_token.value}")
 
