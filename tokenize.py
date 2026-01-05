@@ -89,16 +89,35 @@ def split_tokenize(expression: str) -> list:
                 tokens.append(Token(Tokenize.OPERATOR, '-'))
                 token_type = Tokenize.OPERATOR
             elif long_num and long_num == '-' * len(long_num):
+                attach_number = False
                 if tokens and tokens[-1].type == Tokenize.OPERATOR:
                     last_opr = tokens[-1].value
-                    if last_opr in operator_dict and operator_dict[last_opr]['position'] == 'middle':
-                        long_num += char
-                        continue
+                    if last_opr in operator_dict:
+                        last_pos = operator_dict[last_opr]['position']
+                        if last_pos in ['middle', 'left']:
+                            attach_number = True
+                elif tokens and tokens[-1].type == Tokenize.LPAREN:
+                    attach_number = True
+
+                if attach_number:
+                    long_num += char
+                    continue
+
                 for minus in long_num:
                     tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
                 long_num = char
                 token_type = Tokenize.OPERATOR
                 continue
+            elif token_type == Tokenize.OPERATOR:
+                if tokens and tokens[-1].type == Tokenize.OPERATOR:
+                    last_opr = tokens[-1].value
+                    if last_opr == 'minus_unary':
+                        tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
+                        token_type = Tokenize.OPERATOR
+                    else:
+                        long_num = char
+                else:
+                    long_num = char
             elif token_type is None:
                 tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
                 token_type = Tokenize.OPERATOR
@@ -147,6 +166,7 @@ def split_tokenize(expression: str) -> list:
         else:
             organize_exp = organize_minus(long_num)
             tokens.append(Token(Tokenize.NUMBER, organize_exp))
+    print(f"DEBUG: Final tokens = {[t.value for t in tokens]}")
     return tokens
 
 

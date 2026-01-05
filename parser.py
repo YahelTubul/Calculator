@@ -13,6 +13,9 @@ def follow_prefix_op(curr_op: str, prev_op: str) -> bool:
     if operator_dict[curr_op]['arity'] == 2 or operator_dict[prev_op]['arity'] == 2:
         return True
 
+    if curr_op == 'minus_unary' and prev_op == 'minus_unary':
+        return True
+
     # return false when there is two unary prefix operators in a row
     return False
 
