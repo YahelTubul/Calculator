@@ -89,6 +89,11 @@ def split_tokenize(expression: str) -> list:
                 tokens.append(Token(Tokenize.OPERATOR, '-'))
                 token_type = Tokenize.OPERATOR
             elif long_num and long_num == '-' * len(long_num):
+                if tokens and tokens[-1].type == Tokenize.OPERATOR:
+                    last_opr = tokens[-1].value
+                    if last_opr in operator_dict and operator_dict[last_opr]['position'] == 'middle':
+                        long_num += char
+                        continue
                 for minus in long_num:
                     tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
                 long_num = char
@@ -142,8 +147,6 @@ def split_tokenize(expression: str) -> list:
         else:
             organize_exp = organize_minus(long_num)
             tokens.append(Token(Tokenize.NUMBER, organize_exp))
-
-    print({[t.value for t in tokens]})
     return tokens
 
 
