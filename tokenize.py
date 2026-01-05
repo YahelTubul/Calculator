@@ -166,7 +166,6 @@ def split_tokenize(expression: str) -> list:
         else:
             organize_exp = organize_minus(long_num)
             tokens.append(Token(Tokenize.NUMBER, organize_exp))
-    print(f"DEBUG: Final tokens = {[t.value for t in tokens]}")
     return tokens
 
 
