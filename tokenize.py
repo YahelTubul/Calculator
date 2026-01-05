@@ -78,21 +78,21 @@ def split_tokenize(expression: str) -> list:
     for char in expression:
         # check for negative numbers. by compare if the prev token it's not a number type
         if char == '-':
-            if token_type in [Tokenize.NUMBER, Tokenize.RPAREN]:
-                if long_num:
-                    organize_exp = organize_minus(long_num)
-                    tokens.append(Token(Tokenize.NUMBER, organize_exp))
-                    token_type = Tokenize.NUMBER
-                    long_num = ""
+            if check_digits(long_num):
+                organize_exp = organize_minus(long_num)
+                tokens.append(Token(Tokenize.NUMBER, organize_exp))
+                token_type = Tokenize.NUMBER
+                long_num = ""
                 tokens.append(Token(Tokenize.OPERATOR, '-'))
                 token_type = Tokenize.OPERATOR
-
+            elif token_type in [Tokenize.NUMBER, Tokenize.RPAREN]:
+                tokens.append(Token(Tokenize.OPERATOR, '-'))
+                token_type = Tokenize.OPERATOR
             elif token_type is None:
                 tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
                 token_type = Tokenize.OPERATOR
-
             else:
-                long_num += char
+                long_num = char
         # check if the char is number or float number and for number with two numbers and more
         elif char.isdigit() or (char == '.' and '.' not in long_num):
             long_num += char
