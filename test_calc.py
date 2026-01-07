@@ -111,3 +111,85 @@ def two_unary_test():
     assert basic_calc("~-3!") == 6
 
 
+#####complex expressions#####
+
+def comp_1():
+    assert basic_calc("(2 + 3) * 4 - 5 / 5") == 19
+
+
+def comp_2():
+    assert basic_calc("2 ^ 3 + 4 * 5 - 6 / 2") == 25
+
+
+def comp_3():
+    assert basic_calc("((10 + 5) * 2) / 3") == 10
+
+
+def comp_4():
+    assert basic_calc("5! - 100 + 20 / 4") == 25
+
+
+def comp_5():
+    assert basic_calc("~(3 + 4) * 2 + 10") == -4
+
+
+def comp_6():
+    assert basic_calc("2 ^ (3 + 1) - 4 * 2") == 8
+
+
+def comp_7():
+    assert basic_calc("(5 $ 8) & (10 $ 3)") == 8
+
+
+def comp_8():
+    assert basic_calc("3! + 2! * 4 - 1") == 13
+
+
+def comp_9():
+    assert basic_calc("10 % 3 + 15 / 3 * 2") == 11
+
+
+def comp_10():
+    assert basic_calc("(4 @ 6) * (8 @ 12)") == 50
+
+
+def comp_11():
+    assert basic_calc("2 + 3 * 4 - 5 / 5 + 1") == 14
+
+
+def comp_12():
+    assert basic_calc("~-2 ^ 3 + 4 * 5") == 28
+
+
+def comp_13():
+    assert basic_calc("(10 - 5) * (3 + 2) / 5") == 5
+
+
+def comp_14():
+    assert basic_calc("4! / 6 + 2 ^ 3 - 1") == 11
+
+
+def comp_15():
+    assert basic_calc("(2 $ 3) + (4 & 5) * 2") == 11
+
+
+def comp_16():
+    assert basic_calc("~(5 - 10) + 3! - 2") == 9
+
+
+def comp_17():
+    assert basic_calc("2 ^ 3 ^ 2 / 8 + 1") == 65
+
+
+def comp_18():
+    assert basic_calc("(3 @ 7) * 2 - 1 + 5 % 3") == 11
+
+
+def comp_19():
+    assert basic_calc("10 / 2 + 3 * 4 - 5 $ 2") == 12
+
+
+def comp_20():
+    assert basic_calc("~5 + (2 + 3) * 4") == 15
+
+    
