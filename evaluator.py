@@ -14,6 +14,19 @@ def factorial(num: int) -> float:
         return num * factorial(num - 1)
 
 
+
+"""This function handle in the new operator # that sum the digits in the number"""
+
+def sum_digits(num: float) -> float:
+    if num == 0:
+        return 0
+
+    clean_num = str(num).replace('.', '')
+    clean_num.replace('-', '')
+    total = sum(float(digit) for digit in clean_num if digit.isdigit())
+    return total
+
+
 """This function handles defining the action of each of the binary operators"""
 
 
