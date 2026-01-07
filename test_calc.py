@@ -42,22 +42,22 @@ def syntax_5():
 
 #####strings errors#####
 
-def string_1():
+def giberish_string():
     with pytest.raises(Exception):
         basic_calc("abcdefg..")
 
 
-def string_2():
+def empty_string():
     with pytest.raises(Exception):
         basic_calc("")
 
 
-def string_3():
+def space_string():
     with pytest.raises(Exception):
         basic_calc("      ")
 
 
-def string_4():
+def tab_string():
     with pytest.raises(Exception):
         basic_calc("\t \t")
 
@@ -65,49 +65,49 @@ def string_4():
 #####basic expressions#####
 
 
-def exp_1():
+def add_test():
     assert basic_calc("2+9") == 11
 
-def exp_2():
+def sub_test():
     assert basic_calc("5-3") == 2
 
-def exp_3():
+def mul_test():
     assert basic_calc("5*6") == 30
 
-def exp_4():
+def div_test():
     assert basic_calc("63/7") == 9
 
-def exp_5():
+def pow_test():
     assert basic_calc("2^4") == 16
 
-def exp_6():
+def mod_test():
     assert basic_calc("5 % 3") == 2
 
-def exp_7():
+def max_test():
     assert basic_calc("16 $ 20") == 20
 
-def exp_8():
+def min_test():
     assert basic_calc("7&6") == 6
 
-def exp_9():
-    assert basic_calc("20^10") == 15
+def avg_test():
+    assert basic_calc("20@10") == 15
 
-def exp_10():
+def factor_test():
     assert basic_calc("4!") == 24
 
-def exp_11():
+def tilda_test():
     assert basic_calc("~17") == -17
 
-def exp_12():
+def minus_test():
     assert basic_calc("-3+7") == 4
 
-def exp_13():
+def unary_test():
     assert basic_calc("--5 + 3") == 8
 
-def exp_14():
+def minus_and_pow_test():
     assert basic_calc("-2^3") == -8
 
-def exp_15():
+def two_unary_test():
     assert basic_calc("~-3!") == 6
 
 
