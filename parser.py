@@ -153,6 +153,9 @@ def parser(reverse_tokens: list) -> list:
 
                     if top_pos == 'right' and curr_pos == 'left':
                         need_pop = False
+
+                    elif top_pos == 'middle' and curr_pos == 'middle':
+                        need_pop = False
                     else:
                         need_pop = True
 

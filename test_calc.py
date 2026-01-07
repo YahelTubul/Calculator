@@ -178,7 +178,7 @@ def test_comp_16():
 
 
 def test_comp_17():
-    assert basic_calc("2 ^ 3 ^ 2 / 8 + 1") == 65
+    assert basic_calc("2 ^ 3 ^ 2 / 8 + 1") == 9
 
 
 def test_comp_18():

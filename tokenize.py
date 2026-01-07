@@ -111,7 +111,13 @@ def split_tokenize(expression: str) -> list:
             elif token_type == Tokenize.OPERATOR:
                 if tokens and tokens[-1].type == Tokenize.OPERATOR:
                     last_opr = tokens[-1].value
-                    if last_opr == 'minus_unary':
+                    last_pos = operator_dict.get(last_opr, {}).get('position')
+
+                    if last_pos == 'right':
+                        tokens.append(Token(Tokenize.OPERATOR, '-'))
+                        token_type = Tokenize.OPERATOR
+
+                    elif last_opr == 'minus_unary':
                         tokens.append(Token(Tokenize.OPERATOR, 'minus_unary'))
                         token_type = Tokenize.OPERATOR
                     else:
