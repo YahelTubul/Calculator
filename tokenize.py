@@ -29,6 +29,7 @@ operator_dict = {
     'minus_unary': {'precedence': 2.5, 'position': 'left', 'arity': 1},  # minus unary
     '~': {'precedence': 6, 'position': 'left', 'arity': 1},  # negative
     '!': {'precedence': 6, 'position': 'right', 'arity': 1},  # factorial
+    '#': {'precedence': 6, 'position': 'right', 'arity': 1},  # add numbers
 }
 
 
