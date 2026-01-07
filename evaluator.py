@@ -19,7 +19,7 @@ def factorial(num: float) -> float:
 
 def sum_digits(num: float) -> float:
     if num < 0:
-        return 0
+        raise ValueError("cannot do sum of negative number")
     clean_num = str(num).replace('.', '').replace('-', '')
     total = sum(float(digit) for digit in clean_num if digit.isdigit())
     return total

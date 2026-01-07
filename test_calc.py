@@ -104,8 +104,8 @@ def test_minus():
 def test_unary():
     assert basic_calc("--5 + 3") == 8
 
-def test_minus_and_pow():
-    assert basic_calc("-2^3") == -8
+def test_sum_digits():
+    assert basic_calc("-2#+3") == 1
 
 def test_two_unary():
     assert basic_calc("~-3!") == 6
