@@ -37,3 +37,20 @@ def syntax_5():
 
 
 #####strings errors#####
+
+def string_1():
+    with pytest.raises(Exception):
+        basic_calc("abcdefg..")
+
+def string_2():
+    with pytest.raises(Exception):
+        basic_calc("")
+
+def string_3():
+    with pytest.raises(Exception):
+        basic_calc("      ")
+
+def string_4():
+    with pytest.raises(Exception):
+        basic_calc("\t \t")
+
