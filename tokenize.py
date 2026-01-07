@@ -9,7 +9,7 @@ class Tokenize(Enum):
     RPAREN = 4
 
 
-operators: list = ['+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!']
+operators: list = ['+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!','#']
 
 operator_dict = {
     '+': {'precedence': 1, 'position': 'middle', 'arity': 2},  # add

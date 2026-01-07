@@ -5,7 +5,7 @@ NUM_OPERANDS = 2
 """This function calc the factorial that getting from the unary_operator function"""
 
 
-def factorial(num: int) -> float:
+def factorial(num: float) -> float:
     if num < 0:
         raise ValueError("Cannot do factorial of negative number")
     if num == 0:
@@ -14,15 +14,13 @@ def factorial(num: int) -> float:
         return num * factorial(num - 1)
 
 
-
 """This function handle in the new operator # that sum the digits in the number"""
 
-def sum_digits(num: float) -> float:
-    if num == 0:
-        return 0
 
-    clean_num = str(num).replace('.', '')
-    clean_num.replace('-', '')
+def sum_digits(num: float) -> float:
+    if num < 0:
+        return 0
+    clean_num = str(num).replace('.', '').replace('-', '')
     total = sum(float(digit) for digit in clean_num if digit.isdigit())
     return total
 
@@ -66,7 +64,9 @@ def unary_operator(operand: float, operator: str):
     elif operator == 'minus_unary':
         return -operand
     elif operator == '!':
-        return factorial(int(operand))
+        return factorial(float(operand))
+    elif operator == '#':
+        return sum_digits(float(operand))
     else:
         raise ValueError('Invalid operator')
 
