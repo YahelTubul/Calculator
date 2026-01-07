@@ -68,8 +68,8 @@ def classify_operator(operator: str, stack: list):
         operand = stack.pop()
         return unary_operator(operand, operator)
     elif arity == 2:
-        operand_1 = stack.pop()
         operand_2 = stack.pop()
+        operand_1 = stack.pop()
         return binary_operator(operand_1, operand_2, operator)
     else:
         raise ValueError("Too much arity for the operator")

@@ -15,49 +15,49 @@ def basic_calc(exp: str) -> float:
 
 #####syntax errors#####
 
-def syntax_1():
+def test_syntax_1():
     with pytest.raises(Exception):
         basic_calc("2*^3")
 
 
-def syntax_2():
+def test_syntax_2():
     with pytest.raises(Exception):
         basic_calc("7++5")
 
 
-def syntax_3():
+def test_syntax_3():
     with pytest.raises(Exception):
         basic_calc("2+9)")
 
 
-def syntax_4():
+def test_syntax_4():
     with pytest.raises(Exception):
         basic_calc("^7")
 
 
-def syntax_5():
+def test_syntax_5():
     with pytest.raises(Exception):
         basic_calc("~~3")
 
 
 #####strings errors#####
 
-def giberish_string():
+def test_giberish_string():
     with pytest.raises(Exception):
         basic_calc("abcdefg..")
 
 
-def empty_string():
+def test_empty_string():
     with pytest.raises(Exception):
         basic_calc("")
 
 
-def space_string():
+def test_space_string():
     with pytest.raises(Exception):
         basic_calc("      ")
 
 
-def tab_string():
+def test_tab_string():
     with pytest.raises(Exception):
         basic_calc("\t \t")
 
@@ -65,131 +65,130 @@ def tab_string():
 #####basic expressions#####
 
 
-def add_test():
+def test_add():
     assert basic_calc("2+9") == 11
 
-def sub_test():
+def test_sub():
     assert basic_calc("5-3") == 2
 
-def mul_test():
+def test_mul():
     assert basic_calc("5*6") == 30
 
-def div_test():
+def test_div():
     assert basic_calc("63/7") == 9
 
-def pow_test():
+def test_pow():
     assert basic_calc("2^4") == 16
 
-def mod_test():
+def test_mod():
     assert basic_calc("5 % 3") == 2
 
-def max_test():
+def test_max():
     assert basic_calc("16 $ 20") == 20
 
-def min_test():
+def test_min():
     assert basic_calc("7&6") == 6
 
-def avg_test():
+def test_avg():
     assert basic_calc("20@10") == 15
 
-def factor_test():
+def test_factor():
     assert basic_calc("4!") == 24
 
-def tilda_test():
+def test_tilda():
     assert basic_calc("~17") == -17
 
-def minus_test():
+def test_minus():
     assert basic_calc("-3+7") == 4
 
-def unary_test():
+def test_unary():
     assert basic_calc("--5 + 3") == 8
 
-def minus_and_pow_test():
+def test_minus_and_pow():
     assert basic_calc("-2^3") == -8
 
-def two_unary_test():
+def test_two_unary():
     assert basic_calc("~-3!") == 6
 
 
 #####complex expressions#####
 
-def comp_1():
+def test_comp_1():
     assert basic_calc("(2 + 3) * 4 - 5 / 5") == 19
 
 
-def comp_2():
+def test_comp_2():
     assert basic_calc("2 ^ 3 + 4 * 5 - 6 / 2") == 25
 
 
-def comp_3():
+def test_comp_3():
     assert basic_calc("((10 + 5) * 2) / 3") == 10
 
 
-def comp_4():
+def test_comp_4():
     assert basic_calc("5! - 100 + 20 / 4") == 25
 
 
-def comp_5():
+def test_comp_5():
     assert basic_calc("~(3 + 4) * 2 + 10") == -4
 
 
-def comp_6():
+def test_comp_6():
     assert basic_calc("2 ^ (3 + 1) - 4 * 2") == 8
 
 
-def comp_7():
+def test_comp_7():
     assert basic_calc("(5 $ 8) & (10 $ 3)") == 8
 
 
-def comp_8():
+def test_comp_8():
     assert basic_calc("3! + 2! * 4 - 1") == 13
 
 
-def comp_9():
+def test_comp_9():
     assert basic_calc("10 % 3 + 15 / 3 * 2") == 11
 
 
-def comp_10():
+def test_comp_10():
     assert basic_calc("(4 @ 6) * (8 @ 12)") == 50
 
 
-def comp_11():
+def test_comp_11():
     assert basic_calc("2 + 3 * 4 - 5 / 5 + 1") == 14
 
 
-def comp_12():
+def test_comp_12():
     assert basic_calc("~-2 ^ 3 + 4 * 5") == 28
 
 
-def comp_13():
+def test_comp_13():
     assert basic_calc("(10 - 5) * (3 + 2) / 5") == 5
 
 
-def comp_14():
+def test_comp_14():
     assert basic_calc("4! / 6 + 2 ^ 3 - 1") == 11
 
 
-def comp_15():
+def test_comp_15():
     assert basic_calc("(2 $ 3) + (4 & 5) * 2") == 11
 
 
-def comp_16():
+def test_comp_16():
     assert basic_calc("~(5 - 10) + 3! - 2") == 9
 
 
-def comp_17():
+def test_comp_17():
     assert basic_calc("2 ^ 3 ^ 2 / 8 + 1") == 65
 
 
-def comp_18():
+def test_comp_18():
     assert basic_calc("(3 @ 7) * 2 - 1 + 5 % 3") == 11
 
 
-def comp_19():
+def test_comp_19():
     assert basic_calc("10 / 2 + 3 * 4 - 5 $ 2") == 12
 
 
-def comp_20():
+def test_comp_20():
     assert basic_calc("~5 + (2 + 3) * 4") == 15
 
-    
